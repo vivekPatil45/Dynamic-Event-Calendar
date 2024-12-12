@@ -50,7 +50,7 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
       <div
         ref={drag}
         className={`text-xs truncate cursor-move p-1 rounded mb-1 ${colorClass} ${isDragging ? 'opacity-50' : ''}`}
-    >
+      >
         {event.name}
       </div>
     )
@@ -69,7 +69,7 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
       <div
         ref={drop}
         className={`min-h-[100px] border border-border p-1 transition-colors duration-200 ease-in-out
-  ${isToday ? 'bg-primary/10' : ''}
+  ${isToday ? 'bg-primary/20' : ''}
   ${isCurrentMonth ? '' : 'opacity-50'}
   hover:bg-secondary/20 hover:shadow-md`}
         onClick={() => onDateClick(date)}
