@@ -5,6 +5,7 @@ export interface Event {
     startTime: string
     endTime: string
     description?: string
+    color?: string
 }
   
   

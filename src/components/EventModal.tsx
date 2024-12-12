@@ -3,13 +3,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Event } from '@/type'
 
 interface EventModalProps {
-    selectedDate: Date | null
-    onClose: () => void
-    onSave: (event: Event) => void
-    editingEvent: Event | null
+  selectedDate: Date | null
+  onClose: () => void
+  onSave: (event: Event) => void
+  editingEvent: Event | null
 }
 
 export default function EventModal({ selectedDate, onClose, onSave, editingEvent }: EventModalProps) {
@@ -17,6 +18,7 @@ export default function EventModal({ selectedDate, onClose, onSave, editingEvent
     const [startTime, setStartTime] = useState('')
     const [endTime, setEndTime] = useState('')
     const [description, setDescription] = useState('')
+    const [color, setColor] = useState('')
 
     useEffect(() => {
         if (editingEvent) {
@@ -24,6 +26,7 @@ export default function EventModal({ selectedDate, onClose, onSave, editingEvent
         setStartTime(editingEvent.startTime)
         setEndTime(editingEvent.endTime)
         setDescription(editingEvent.description || '')
+        setColor(editingEvent.color || '')
         }
     }, [editingEvent])
 
@@ -35,7 +38,8 @@ export default function EventModal({ selectedDate, onClose, onSave, editingEvent
         name,
         startTime,
         endTime,
-        description
+        description,
+        color
         }
         onSave(event)
     }
@@ -69,6 +73,16 @@ export default function EventModal({ selectedDate, onClose, onSave, editingEvent
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
+            <Select value={color} onValueChange={setColor}>
+                <SelectTrigger>
+                <SelectValue placeholder="Select color" />
+                </SelectTrigger>
+                <SelectContent>
+                <SelectItem value="lightblue">Work</SelectItem>
+                <SelectItem value="lightgreen">Personal</SelectItem>
+                <SelectItem value="lightpink">Other</SelectItem>
+                </SelectContent>
+            </Select>
             <Button onClick={handleSave}>Save</Button>
             </div>
         </DialogContent>
