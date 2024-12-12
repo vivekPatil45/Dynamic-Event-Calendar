@@ -5,7 +5,7 @@ import EventList from './components/EventList'
 import { Event } from '@/type'
 import saveAs from 'file-saver'
 
-export default function Home() {
+export default function App() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [showEventModal, setShowEventModal] = useState(false)
   const [showEventList, setShowEventList] = useState(false)
@@ -130,12 +130,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-10 bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-4 flex ">
           <h1 className="text-2xl font-bold">Dynamic Event Calendar</h1>
-         
         </div>
       </header>
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 bg-gray-100">
         <Calendar 
           events={filteredEvents}
           onDateClick={handleDateClick}
