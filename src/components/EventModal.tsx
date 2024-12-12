@@ -44,6 +44,8 @@ export default function EventModal({ selectedDate, onClose, onSave, editingEvent
         }
         onSave(event)
     }
+    console.log(selectedDate);
+    
 
     return (
         <Dialog open={true} onOpenChange={onClose}>
