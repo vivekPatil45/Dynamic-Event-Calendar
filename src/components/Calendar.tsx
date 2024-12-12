@@ -22,19 +22,23 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
   const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
 
+  // Navigate to the previous month
   const prevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))
   }
-
+  // Navigate to the next month
   const nextMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))
   }
+
+  // Handle dragging and dropping of events onto a new date
 
   const handleEventDrop = (event: Event, newDate: Date) => {
     const updatedEvent = { ...event, date: newDate }
     onUpdateEvent(updatedEvent)
   }
 
+  // Draggable Event component that can be moved between calendar days
   const DraggableEvent = ({ event }: { event: Event }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
       type: 'EVENT',
@@ -56,6 +60,7 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
     )
   }
 
+  // Calendar day cell that displays a date and its associated events
   const CalendarDay = ({ date, dayEvents }: { date: Date, dayEvents: Event[] }) => {
     const [, drop] = useDrop(() => ({
       accept: 'EVENT',

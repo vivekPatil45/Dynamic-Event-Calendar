@@ -53,7 +53,7 @@ The Dynamic Event Calendar is a web application that allows users to create, edi
 
 ## Link to Deployed App
 
-[Deployed App URL](#)
+[Live Link](https://dynamic-event-calendar-chi.vercel.app/)
 
 ## Technologies Used
 
