@@ -1,50 +1,63 @@
-# React + TypeScript + Vite
+# Dynamic Event Calendar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Dynamic Event Calendar is a web application that allows users to create, edit, view, and delete events on a calendar interface. It provides intuitive functionality for managing events and ensures no overlapping events occur. Users can export events in JSON or CSV format for further use.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Calendar**: View events by date with a clean and responsive calendar interface.
+- **Add and Edit Events**: Create new events or modify existing ones with details like name, date, start time, end time, description, and color coding.
+- **Event List**: View a list of events for a selected date.
+- **Event Filtering**: Search and filter events based on keywords.
+- **Event Export**: Export current month's events in JSON or CSV format.
+- **Local Storage**: Events are saved locally in the browser's storage to persist data across sessions.
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+- Node.js (>= 14.x)
+- npm or yarn package manager
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Installation
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. Clone the repository:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. Install dependencies:
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+### Running the App Locally
+
+1. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+2. Open your browser and navigate to:
+
+   ```
+   http://localhost:3000
+   ```
+
+## Link to Deployed App
+
+[Deployed App URL](#)
+
+## Technologies Used
+
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **State Management**: React Hooks
+- **Storage**: LocalStorage for persistent data
+- **Utilities**: FileSaver.js for event export
