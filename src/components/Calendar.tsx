@@ -5,6 +5,7 @@ import { Event } from '@/type'
 import { useDrag, useDrop, DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Input } from '@/components/ui/input'
+import { Card, CardContent } from './ui/card'
 
 interface CalendarProps {
     events: Event[]
@@ -46,8 +47,8 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
       return (
         <div
           ref={drag}
-          className={`text-xs truncate cursor-move ${isDragging ? 'opacity-50' : ''}`}
-          style={{ backgroundColor: event.color || 'lightblue' }}
+          className={`text-xs truncate cursor-move p-1 rounded mb-1 ${isDragging ? 'opacity-50' : ''}`}
+          style={{ backgroundColor: event.color || 'var(--primary)' }}
         >
           {event.name}
         </div>
@@ -61,26 +62,44 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
       }))
 
       const isToday = date.toDateString() === new Date().toDateString()
+      const isCurrentMonth = date.getMonth() === currentDate.getMonth()
 
       return (
         <div
           ref={drop}
-          className={`h-24 border p-1 cursor-pointer ${isToday ? 'bg-blue-100' : ''}`}
+          className={`min-h-[100px] border border-border p-1 ${
+            isToday ? 'bg-primary/10' : ''
+          } ${
+            isCurrentMonth ? '' : 'opacity-50'
+          }`}
           onClick={() => onDateClick(date)}
         >
-          <div className="font-bold">{date.getDate()}</div>
-          {dayEvents.map((event) => (
-            <DraggableEvent key={event.id} event={event} />
-          ))}
+          <div className={`font-bold text-sm ${isToday ? 'text-primary' : ''}`}>{date.getDate()}</div>
+          <div className="space-y-1 mt-1">
+            {dayEvents.map((event) => (
+              <DraggableEvent key={event.id} event={event} />
+            ))}
+          </div>
         </div>
       )
     }
 
     const renderCalendarDays = () => {
       const days = []
-      for (let i = 0; i < firstDayOfMonth; i++) {
-        days.push(<div key={`empty-${i}`} className="h-24"></div>)
+      const totalDays = 42 // 6 weeks
+      const lastMonthDays = firstDayOfMonth
+      const nextMonthDays = totalDays - daysInMonth - lastMonthDays
+
+      // Previous month days
+      for (let i = lastMonthDays - 1; i >= 0; i--) {
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate() - i)
+        const dayEvents = events.filter(event => event.date.toDateString() === date.toDateString())
+        days.push(
+          <CalendarDay key={`prev-${i}`} date={date} dayEvents={dayEvents} />
+        )
       }
+
+      // Current month days
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
         const dayEvents = events.filter(event => event.date.toDateString() === date.toDateString())
@@ -88,21 +107,32 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
           <CalendarDay key={day} date={date} dayEvents={dayEvents} />
         )
       }
+
+      // Next month days
+      for (let i = 1; i <= nextMonthDays; i++) {
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, i)
+        const dayEvents = events.filter(event => event.date.toDateString() === date.toDateString())
+        days.push(
+          <CalendarDay key={`next-${i}`} date={date} dayEvents={dayEvents} />
+        )
+      }
+
       return days
     }
 
     return (
       <DndProvider backend={HTML5Backend}>
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0">
+            <h2 className="text-2xl font-bold">
               {currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
             </h2>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2">
               <Input
                 placeholder="Filter events"
                 onChange={(e) => onFilterEvents(e.target.value)}
-                className="w-40"
+                className="w-full sm:w-40"
               />
               <Button onClick={prevMonth} variant="outline" size="icon">
                 <ChevronLeft className="h-4 w-4" />
@@ -113,22 +143,25 @@ export default function Calendar({ events, onDateClick, onAddEvent, onFilterEven
               <Button onClick={onAddEvent} variant="outline" size="icon">
                 <Plus className="h-4 w-4" />
               </Button>
-              <Button onClick={() => onExportEvents('json')} variant="outline">
+              <Button onClick={() => onExportEvents('json')} variant="outline" size="sm">
                 Export JSON
               </Button>
-              <Button onClick={() => onExportEvents('csv')} variant="outline">
+              <Button onClick={() => onExportEvents('csv')} variant="outline" size="sm">
                 Export CSV
               </Button>
             </div>
           </div>
-          <div className="grid grid-cols-7 gap-1">
+          <div className="grid grid-cols-7 gap-1 mb-2">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-              <div key={day} className="font-bold text-center">{day}</div>
+              <div key={day} className="font-bold text-center text-sm">{day}</div>
             ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
             {renderCalendarDays()}
           </div>
-        </div>
-      </DndProvider>
+        </CardContent>
+      </Card>
+    </DndProvider>
     )
 }
 
